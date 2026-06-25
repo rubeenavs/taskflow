@@ -138,3 +138,5 @@ C:\Users\User\Desktop\Project\TaskManagerSolution\TaskManager.API\obj\Debug\net8
 C:\Users\User\Desktop\Project\TaskManagerSolution\TaskManager.API\obj\Debug\net8.0\TaskManager.API.pdb
 C:\Users\User\Desktop\Project\TaskManagerSolution\TaskManager.API\obj\Debug\net8.0\TaskManager.API.genruntimeconfig.cache
 C:\Users\User\Desktop\Project\TaskManagerSolution\TaskManager.API\obj\Debug\net8.0\ref\TaskManager.API.dll
+C:\Users\User\Desktop\Project\TaskManagerSolution\TaskManager.API\bin\Debug\net8.0\BCrypt-Net-Next.dll
+C:\Users\User\Desktop\Project\TaskManagerSolution\TaskManager.API\obj\Debug\net8.0\TaskManager.API.sourcelink.json
