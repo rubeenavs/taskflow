@@ -91,73 +91,94 @@ namespace TaskManager.API.Controllers
             var project = await GetOwnedProjectAsync(projectId);
             if (project == null) return NotFound("Project not found.");
 
-            var task = new TaskItem
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
             {
-                Title = input.Title,
-                Description = input.Description,
-                Status = input.Status,
-                Priority = input.Priority,
-                DueDate = input.DueDate,
-                ProjectId = projectId
-            };
+                var task = new TaskItem
+                {
+                    Title = input.Title,
+                    Description = input.Description,
+                    Status = input.Status,
+                    Priority = input.Priority,
+                    DueDate = input.DueDate,
+                    ProjectId = projectId
+                };
 
-            _context.Tasks.Add(task);
-            await _context.SaveChangesAsync();
+                _context.Tasks.Add(task);
+                await _context.SaveChangesAsync();
 
-            var dto = new TaskItemDto
+                var dto = new TaskItemDto
+                {
+                    Id = task.Id,
+                    Title = task.Title,
+                    Description = task.Description,
+                    Status = task.Status,
+                    Priority = task.Priority,
+                    DueDate = task.DueDate,
+                    CreatedAt = task.CreatedAt,
+                    ProjectId = task.ProjectId
+                };
+
+                return CreatedAtAction(nameof(GetTask), new { projectId = projectId, id = task.Id }, dto);
+            }
+            catch (Exception)
             {
-                Id = task.Id,
-                Title = task.Title,
-                Description = task.Description,
-                Status = task.Status,
-                Priority = task.Priority,
-                DueDate = task.DueDate,
-                CreatedAt = task.CreatedAt,
-                ProjectId = task.ProjectId
-            };
-
-            return CreatedAtAction(nameof(GetTask), new { projectId = projectId, id = task.Id }, dto);
+                return StatusCode(500, "An unexpected error occurred while saving the task.");
+            }
         }
 
-        // PUT: api/projects/5/tasks/3
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTask(int projectId, int id, UpdateTaskItemDto input)
-        {
-            var project = await GetOwnedProjectAsync(projectId);
-            if (project == null) return NotFound("Project not found.");
+            // PUT: api/projects/5/tasks/3
+            [HttpPut("{id}")]
+            public async Task<IActionResult> UpdateTask(int projectId, int id, UpdateTaskItemDto input)
+            {
+                var project = await GetOwnedProjectAsync(projectId);
+                if (project == null) return NotFound("Project not found.");
 
-            var task = await _context.Tasks
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var task = await _context.Tasks
                 .FirstOrDefaultAsync(t => t.Id == id && t.ProjectId == projectId);
 
-            if (task == null) return NotFound("Task not found.");
+                if (task == null) return NotFound("Task not found.");
 
-            task.Title = input.Title;
-            task.Description = input.Description;
-            task.Status = input.Status;
-            task.Priority = input.Priority;
-            task.DueDate = input.DueDate;
+                try
+                {
 
-            await _context.SaveChangesAsync();
+                    task.Title = input.Title;
+                    task.Description = input.Description;
+                    task.Status = input.Status;
+                    task.Priority = input.Priority;
+                    task.DueDate = input.DueDate;
 
-            return NoContent();
-        }
+                    await _context.SaveChangesAsync();
 
-        // DELETE: api/projects/5/tasks/3
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTask(int projectId, int id)
-        {
-            var project = await GetOwnedProjectAsync(projectId);
-            if (project == null) return NotFound("Project not found.");
+                    return NoContent();
+                }
+                catch (Exception)
+                {
+                    return StatusCode(500, "An unexpected error occurred while updating the task.");
+                }
+            }
 
-            var task = await _context.Tasks
-                .FirstOrDefaultAsync(t => t.Id == id && t.ProjectId == projectId);
+            // DELETE: api/projects/5/tasks/3
+            [HttpDelete("{id}")]
+            public async Task<IActionResult> DeleteTask(int projectId, int id)
+            {
+                var project = await GetOwnedProjectAsync(projectId);
+                if (project == null) return NotFound("Project not found.");
 
-            if (task == null) return NotFound("Task not found.");
+                var task = await _context.Tasks
+                    .FirstOrDefaultAsync(t => t.Id == id && t.ProjectId == projectId);
 
-            _context.Tasks.Remove(task);
-            await _context.SaveChangesAsync();
+                if (task == null) return NotFound("Task not found.");
 
-            return NoContent();
+                _context.Tasks.Remove(task);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
         }
     }
-}
