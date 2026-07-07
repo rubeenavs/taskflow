@@ -72,33 +72,47 @@ namespace TaskManager.API.Controllers
         [HttpPost]
         public async Task<ActionResult<ProjectDto>> CreateProject(CreateProjectDto dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var userId = GetUserId();
 
-            var project = new Project
+            try
             {
-                Name = dto.Name,
-                Description = dto.Description,
-                UserId = userId,
-                CreatedAt = DateTime.UtcNow
-            };
 
-            _context.Projects.Add(project);
-            await _context.SaveChangesAsync();
+                var project = new Project
+                {
+                    Name = dto.Name,
+                    Description = dto.Description,
+                    UserId = userId,
+                    CreatedAt = DateTime.UtcNow
+                };
 
-            var result = new ProjectDto
+                _context.Projects.Add(project);
+                await _context.SaveChangesAsync();
+
+                var result = new ProjectDto
+                {
+                    Id = project.Id,
+                    Name = project.Name,
+                    Description = project.Description,
+                    CreatedAt = project.CreatedAt
+                };
+
+                return CreatedAtAction(nameof(GetProject), new { id = project.Id }, result);
+            }
+            catch (Exception)
             {
-                Id = project.Id,
-                Name = project.Name,
-                Description = project.Description,
-                CreatedAt = project.CreatedAt
-            };
-
-            return CreatedAtAction(nameof(GetProject), new { id = project.Id }, result);
+                return StatusCode(500, "An unexpected error occurred while creating the project.");
+            }
         }
         // PUT: api/projects/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProject(int id, CreateProjectDto dto)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var userId = GetUserId();
 
             var project = await _context.Projects
@@ -107,12 +121,20 @@ namespace TaskManager.API.Controllers
             if (project == null)
                 return NotFound();
 
-            project.Name = dto.Name; //overwrite the existing name with the new name from the DTO
-            project.Description = dto.Description;
+            try
+            {
 
-            await _context.SaveChangesAsync();
+                project.Name = dto.Name; //overwrite the existing name with the new name from the DTO
+                project.Description = dto.Description;
 
-            return NoContent();
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An unexpected error occurred while updating the project.");
+            }
         }
         // DELETE: api/projects/5
         [HttpDelete("{id}")]
