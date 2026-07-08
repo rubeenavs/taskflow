@@ -79,6 +79,37 @@ npm install -g @angular/cli
 
 ---
 
+---
+
+## 🏗️ Backend Architecture
+
+The backend follows a layered structure with clear separation between data, business logic, and API responses.
+
+### Authentication & Authorization
+- JWT-based authentication — users receive a signed token on login/register
+- Passwords hashed with BCrypt before storage
+- `[Authorize]` applied at the controller level, so protected endpoints reject unauthenticated requests before any code runs
+
+### Ownership-Based Access Control
+- Every Project and Task request is scoped to the logged-in user via their JWT claims
+- A dedicated `GetOwnedProjectAsync()` check ensures users can only access, edit, or delete their own projects and tasks
+- Tasks use nested routing (`/api/projects/{projectId}/tasks`) with two-level ownership validation — both the project and the task within it are checked against the requesting user
+
+### DTOs & Validation
+- Request and response DTOs keep the API surface clean — clients only send/receive what's necessary (e.g. `projectId` and `userId` are never user-supplied; they come from the URL and JWT respectively)
+- Data annotations (`[Required]`, `[MaxLength]`, etc.) validate incoming DTOs via `ModelState`
+- Invalid requests return `400 Bad Request` with field-level error details before touching the database
+
+### Error Handling
+- Try-catch blocks around database operations handle server/connection-level failures separately from validation errors
+- Consistent error responses across controllers (`400` for validation, `404`/`403` for ownership violations, `500` for unexpected failures)
+
+### Database
+- Entity Framework Core with SQL Server, using code-first migrations
+- Core entities: `Users`, `Projects`, `Tasks` — with a one-to-many relationship from User → Projects → Tasks
+
+---
+
 ## 👩‍💻 About
 
 Built by **Rubeena** — BTech Computer Science graduate, .NET Full Stack Developer.  
