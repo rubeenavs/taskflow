@@ -55,10 +55,15 @@ npm install -g @angular/cli
 5. Start the API: `dotnet run`
 
 ### Frontend
-1. Navigate to `taskmanager-angular/`
+1. Navigate to `taskflow-client/`
 2. Install packages: `npm install`
-3. Start the app: `ng serve`
+3. Start the dev server: `ng serve`
 4. Open browser at `http://localhost:4200`
+
+Other useful commands:
+- `ng build` — creates a production build in the `dist/` folder
+- `ng test` — runs unit tests via Karma
+- `ng generate component <name>` — scaffolds a new component
 
 ---
 
