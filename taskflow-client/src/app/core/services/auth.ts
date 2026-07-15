@@ -18,4 +18,20 @@ export class AuthService {
   register(fullName: string, email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, { fullName, email, password }, { responseType: 'text' });
   }
+
+  logout(): void {
+    localStorage.removeItem('token');
+  }
+
+  getUsername(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'] ?? null;
+    } catch {
+      return null;
+    }
+  }
 }
