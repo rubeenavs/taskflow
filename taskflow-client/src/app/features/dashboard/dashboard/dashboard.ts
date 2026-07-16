@@ -1,19 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {ProjectService, Project} from "../../../core/services/project";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [CommonModule  ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit {
-  constructor(private http: HttpClient) {}
+  projects: Project[] = [];
+  loading = true;
+  errorMessage = '';
+
+  constructor(private projectService: ProjectService) {}
 
   ngOnInit(): void {
-    this.http.get('https://localhost:7009/api/projects').subscribe({
-      next: (data) => console.log('Projects:', data),
-      error: (err) => console.log('Error:', err)
+    this.projectService.getProjects().subscribe({
+      next: (data) => {
+        this.projects = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching projects:', err);
+        this.errorMessage = 'Failed to load projects. Please try again later.';
+        this.loading = false;
+      }
     });
   }
 }

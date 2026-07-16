@@ -1,1 +1,26 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+    <h2>My Projects</h2>
+
+    @if(loading){
+        <p>Loading projects...</p>
+    }
+
+    @else if (errorMessage) {
+        <p class="error">Error: {{ errorMessage }}</p>
+    }
+
+    @else if (projects.length === 0) {
+        <p>No projects found.</p>
+    }
+
+    @else {
+        <ul>
+            @for (project of projects; track project.id) {
+                <li><h3>{{ project.name }}</h3>
+                <p>{{ project.description }}</p>
+                <p class="date">Created At: {{ project.createdAt | date }}</p>
+                </li>
+            }
+        </ul>
+    }
+</div>
