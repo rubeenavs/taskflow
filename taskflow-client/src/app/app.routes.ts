@@ -10,5 +10,6 @@ export const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'dashboard', component: Dashboard, canActivate: [authGuard] },
   { path: 'projects', component: Projects, canActivate: [authGuard] },
-  { path: '', redirectTo: '/login', pathMatch: 'full' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' }, //pathMatch: 'full' ensures that the entire URL path is matched before redirecting to /login
+  { path: '**', redirectTo: '/login' } // wildcard — must be last
 ];
