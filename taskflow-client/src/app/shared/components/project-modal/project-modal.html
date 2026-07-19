@@ -1,0 +1,30 @@
+<div class="pm-backdrop">
+  <div class="pm-content">
+    <h3>{{ project ? 'Edit Project' : 'Create Project' }}</h3>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label>
+        Name
+        <input type="text" formControlName="name" />
+      </label>
+
+      @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <p class="error">Name is required.</p>
+      }
+
+      <label>
+        Description
+        <textarea formControlName="description"></textarea>
+      </label>
+
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }
+
+      <div class="modal-actions">
+        <button type="button" (click)="onCancel()">Cancel</button>  <!-- without type="button", a <button> inside a <form> defaults to type="submit" -->
+        <button type="submit" [disabled]="form.invalid">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
