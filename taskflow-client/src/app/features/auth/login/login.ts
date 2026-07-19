@@ -12,6 +12,7 @@ import { AuthService } from '../../../core/services/auth';
 export class Login {
   loginForm: FormGroup;
   errorMessage = '';
+  successMessage = '';
 
   constructor(
     private fb: FormBuilder,
@@ -34,7 +35,8 @@ export class Login {
     this.authService.login(email, password).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
-        this.router.navigate(['/dashboard']);
+        this.successMessage = 'Login successful!';
+        setTimeout(() => this.router.navigate(['/dashboard']), 1500);
       },
       error: (err) => {
         this.errorMessage = 'Invalid email or password.';

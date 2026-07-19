@@ -33,9 +33,15 @@
         <div class="alert alert-danger py-2">{{ errorMessage }}</div>
       }
 
+      @if (successMessage) {
+        <div class="alert alert-success py-2">{{ successMessage }}</div>
+      }
+
       <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">
         Login
       </button>
+      <br>
+      <p>Don't have an account? <a href="/register">Register</a></p>
     </form>
   </div>
 </div>
