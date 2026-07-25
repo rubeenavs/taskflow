@@ -29,14 +29,14 @@ built with Angular, ASP.NET Core Web API, and SQL Server.
 ## 📸 Screenshots
 
 ### Login Page
-<img src="screenshots/login.png" width="500" />
+<img src="taskflow-client/screenshots/login.png" width="500" />
 
 ### Dashboard
-<img src="screenshots/dashboard.png" width="700" />
+<img src="taskflow-client/screenshots/dashboard.png" width="700" />
 
 ### Project Board
-<img src="screenshots/project-board.png" width="700" />
-<img src="screenshots/project-edit.png" width="700" />
+<img src="taskflow-client/screenshots/project-board.png" width="700" />
+<img src="taskflow-client/screenshots/project-edit.png" width="700" />
 
 ---
 
