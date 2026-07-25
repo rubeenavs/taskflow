@@ -9,10 +9,10 @@ built with Angular, ASP.NET Core Web API, and SQL Server.
 
 - User authentication with JWT (register, login, logout)
 - Create, edit, and delete Projects
-- Create, edit, and delete Tasks within projects
-- Set task priority (Low / Medium / High) and status (To Do / In Progress / Done)
-- Due date tracking on tasks
-- Dashboard overview with project and task counts
+- Responsive, card-based dashboard UI (Bootstrap)
+- Route guards with token-expiry checks — protected routes redirect to login automatically
+- Auth interceptor auto-attaches JWT to API requests and handles 401s by logging out
+- Task management API (priority, status, due dates) — backend complete, frontend in progress
 
 ---
 
@@ -29,10 +29,14 @@ built with Angular, ASP.NET Core Web API, and SQL Server.
 ## 📸 Screenshots
 
 ### Login Page
+<img src="screenshots/login.png" width="500" />
 
 ### Dashboard
+<img src="screenshots/dashboard.png" width="700" />
 
 ### Project Board
+<img src="screenshots/project-board.png" width="700" />
+<img src="screenshots/project-edit.png" width="700" />
 
 ---
 
@@ -84,8 +88,6 @@ Other useful commands:
 
 ---
 
----
-
 ## 🏗️ Backend Architecture
 
 The backend follows a layered structure with clear separation between data, business logic, and API responses.
@@ -112,6 +114,22 @@ The backend follows a layered structure with clear separation between data, busi
 ### Database
 - Entity Framework Core with SQL Server, using code-first migrations
 - Core entities: `Users`, `Projects`, `Tasks` — with a one-to-many relationship from User → Projects → Tasks
+
+---
+
+## 🎨 Frontend Architecture
+
+### Auth Flow
+- Reactive Forms for Login and Register, with client-side validation
+- JWT stored client-side; `AuthService` decodes the payload to read username and check expiry
+- Functional route guard (`CanActivateFn`) blocks access to `/dashboard` and `/projects` for expired or missing tokens, redirecting to `/login`
+- Functional HTTP interceptor attaches the JWT to outgoing requests and handles `401` responses by logging out and redirecting
+
+### Dashboard & Projects
+- `ProjectService` handles all CRUD calls to the API
+- Dashboard renders projects in a responsive Bootstrap card grid, with loading, error, and empty states handled via Angular's `@if`/`@for` control flow
+- A reusable `ProjectModal` component handles both Create and Edit via a shared form, styled with Bootstrap form controls
+- Custom `.pm-backdrop` / `.pm-content` classes handle modal positioning and overlay — scoped separately from Bootstrap's own `.modal` classes to avoid style collisions
 
 ---
 

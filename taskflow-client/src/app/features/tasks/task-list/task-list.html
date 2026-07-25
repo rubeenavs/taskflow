@@ -1,0 +1,32 @@
+@if (loading) {
+  <p>Loading tasks...</p>
+} @else if (errorMessage) {
+  <p class="text-danger">{{ errorMessage }}</p>
+} @else if (tasks.length === 0) {
+  <p>No tasks yet for this project.</p>
+} @else {
+  <div class="row">
+    @for (task of tasks; track task.id) {
+      <div class="col-md-6 col-lg-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ task.title }}</h5>
+            <p class="card-text">{{ task.description }}</p>
+
+            <span class="badge" [ngClass]="{
+              'bg-secondary': task.status === 'Todo',
+              'bg-primary': task.status === 'InProgress',
+              'bg-success': task.status === 'Done'
+            }">{{ task.status }}</span>
+
+            <span class="badge" [ngClass]="{
+              'bg-info': task.priority === 'Low',
+              'bg-warning': task.priority === 'Medium',
+              'bg-danger': task.priority === 'High'
+            }">{{ task.priority }}</span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}

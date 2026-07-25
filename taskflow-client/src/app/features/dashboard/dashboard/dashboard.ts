@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ProjectService, Project} from "../../../core/services/project";
 import {CommonModule} from "@angular/common";
 import {ProjectModal} from "../../../shared/components/project-modal/project-modal";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +18,7 @@ export class Dashboard implements OnInit {
   showModal = false;
   selectedProject: Project | null = null;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(private projectService: ProjectService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadProjects();
@@ -69,4 +70,10 @@ export class Dashboard implements OnInit {
       }
     });
   }
+
+  viewTasks(project: Project) {
+  this.router.navigate(['/projects', project.id, 'tasks']);  //navigate() builds the URL. It doesn't take a URL string you assemble yourself — 
+                                                             //it takes an array of path segments, and joins them with /
+                                                             //this.router.navigate([`/projects/${project.id}/tasks`]) this works too
+}
 }
