@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { TaskService, Task } from '../../../core/services/task';
+import { TaskService, Task, UpdateTaskDto } from '../../../core/services/task';
 import { TaskModal } from '../task-modal/task-modal';
 
 @Component({
@@ -73,4 +73,25 @@ export class TaskList implements OnInit {
       }
     });
   }
+
+updateTaskStatus(task: Task, newStatus: string) {
+  const updateDto: UpdateTaskDto = { ...task, status: newStatus };
+  this.taskService.updateTask(this.projectId, task.id, updateDto).subscribe({
+    next: () => {
+      task.status = newStatus; // update locally, avoids full reload
+    },
+    error: (err) => {
+      console.error('Failed to update status', err);
+    }
+  });
+}
+
+getNextStatuses(currentStatus: string): string[] {
+  const flow: { [key: string]: string[] } = {
+    'Todo': ['InProgress', 'Done'],
+    'InProgress': ['Done', 'Todo'],
+    'Done': ['Todo', 'InProgress']
+  };
+  return flow[currentStatus] || [];
+}
 }
