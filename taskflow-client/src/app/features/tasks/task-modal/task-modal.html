@@ -1,0 +1,57 @@
+<!-- features/tasks/task-modal/task-modal.html -->
+<div class="tm-backdrop" (click)="onCancel()">
+  <div class="tm-content" (click)="$event.stopPropagation()">
+    <h4>{{ isEditMode ? 'Edit Task' : 'Create Task' }}</h4>
+
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input type="text" class="form-control" formControlName="title" />
+        @if (taskForm.get('title')?.invalid && taskForm.get('title')?.touched) {
+          <div class="text-danger small">Title is required (max 100 characters).</div>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" formControlName="description" rows="3"></textarea>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Status</label>
+          <select class="form-control" formControlName="status">
+            <option value="Todo">To Do</option>
+            <option value="InProgress">In Progress</option>
+            <option value="Done">Done</option>
+          </select>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Priority</label>
+          <select class="form-control" formControlName="priority">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Due Date</label>
+        <input type="date" class="form-control" formControlName="dueDate" />
+      </div>
+
+      @if (errorMessage) {
+        <div class="text-danger small mb-3">{{ errorMessage }}</div>
+      }
+
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-outline-secondary" (click)="onCancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="isSaving">
+          {{ isSaving ? 'Saving...' : 'Save' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

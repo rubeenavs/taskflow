@@ -1,3 +1,7 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Tasks</h3>
+  <button class="btn btn-primary" (click)="openCreateModal()">+ Create Task</button>
+</div>
 @if (loading) {
   <p>Loading tasks...</p>
 } @else if (errorMessage) {
@@ -24,9 +28,20 @@
               'bg-warning': task.priority === 'Medium',
               'bg-danger': task.priority === 'High'
             }">{{ task.priority }}</span>
+            <button class="btn btn-sm btn-outline-secondary" (click)="openEditModal(task)">Edit</button>
+<button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task)">Delete</button>
           </div>
         </div>
       </div>
     }
   </div>
+  
+}
+@if (showModal) {
+  <app-task-modal
+    [task]="selectedTask"
+    [projectId]="projectId"
+    (closed)="onModalClosed()"
+    (saved)="onModalSaved()">
+  </app-task-modal>
 }
