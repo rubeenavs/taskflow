@@ -3,7 +3,11 @@
   <button class="btn btn-primary" (click)="openCreateModal()">+ Create Task</button>
 </div>
 @if (loading) {
-  <p>Loading tasks...</p>
+  <div class="d-flex justify-content-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
 } @else if (errorMessage) {
   <p class="text-danger">{{ errorMessage }}</p>
 } @else if (tasks.length === 0) {

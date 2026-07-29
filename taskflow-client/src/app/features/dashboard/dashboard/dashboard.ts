@@ -3,6 +3,7 @@ import {ProjectService, Project} from "../../../core/services/project";
 import {CommonModule} from "@angular/common";
 import {ProjectModal} from "../../../shared/components/project-modal/project-modal";
 import {Router} from "@angular/router";
+import { DashboardService, DashboardStats } from "../../../core/services/dashboard";
 
 @Component({
   selector: 'app-dashboard',
@@ -18,9 +19,29 @@ export class Dashboard implements OnInit {
   showModal = false;
   selectedProject: Project | null = null;
 
-  constructor(private projectService: ProjectService, private router: Router) {}
+  // Dashboard statistics
+  totalProjects = 0;
+  totalTasks = 0;
+  todoCount = 0;
+  inProgressCount = 0;
+  doneCount = 0;
+
+  constructor(private projectService: ProjectService, private router: Router, private dashboardService: DashboardService) {}
 
   ngOnInit(): void {
+    this.dashboardService.getStats().subscribe({
+      next: (stats) => {
+        this.totalProjects = stats.totalProjects;
+        this.totalTasks = stats.totalTasks;
+        this.todoCount = stats.todoCount;
+        this.inProgressCount = stats.inProgressCount;
+        this.doneCount = stats.doneCount;
+      },
+      error: (err) => {
+        console.error('Error fetching dashboard stats:', err);
+        this.errorMessage = 'Failed to load dashboard statistics. Please try again later.';
+      }
+    });
     this.loadProjects();
   }
 
