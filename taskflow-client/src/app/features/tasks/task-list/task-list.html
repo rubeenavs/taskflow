@@ -1,7 +1,9 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="container py-4">
+<div class="d-flex justify-content-between align-items-center mb-4">
   <h3>Tasks</h3>
   <button class="btn btn-primary" (click)="openCreateModal()">+ Create Task</button>
 </div>
+
 @if (loading) {
   <div class="d-flex justify-content-center my-5">
     <div class="spinner-border text-primary" role="status">
@@ -11,18 +13,19 @@
 } @else if (errorMessage) {
   <p class="text-danger">{{ errorMessage }}</p>
 } @else if (tasks.length === 0) {
-  <p>No tasks yet for this project.</p>
+  <div class="text-center text-muted my-5">
+    <p class="mb-2">No tasks yet — create one!</p>
+  </div>
 } @else {
   <div class="row">
     @for (task of tasks; track task.id) {
       <div class="col-md-6 col-lg-4 mb-3">
-        <div class="card">
-          <div class="card-body">
+        <div class="card h-100">
+          <div class="card-body d-flex flex-column">
             <h5 class="card-title">{{ task.title }}</h5>
-            <p class="card-text">{{ task.description }}</p>
+            <p class="card-text flex-grow-1">{{ task.description }}</p>
 
-            <div class="d-flex align-items-center gap-2 mb-2">
-              <!-- status badge IS the dropdown toggle -->
+            <div class="d-flex align-items-center gap-2 mb-3">
               <div class="dropdown">
                 <button class="badge border-0 dropdown-toggle" [ngClass]="{
                   'bg-secondary': task.status === 'Todo',
@@ -49,7 +52,7 @@
               }">{{ task.priority }}</span>
             </div>
 
-            <div>
+            <div class="d-flex gap-2">
               <button class="btn btn-sm btn-outline-secondary" (click)="openEditModal(task)">Edit</button>
               <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task)">Delete</button>
             </div>
@@ -59,6 +62,7 @@
     }
   </div>
 }
+
 @if (showModal) {
   <app-task-modal
     [task]="selectedTask"
@@ -67,3 +71,4 @@
     (saved)="onModalSaved()">
   </app-task-modal>
 }
+</div>
