@@ -136,4 +136,4 @@ The backend follows a layered structure with clear separation between data, busi
 ## 👩‍💻 About
 
 Built by **Rubeena** — BTech Computer Science graduate, .NET Full Stack Developer.  
-[LinkedIn](www.linkedin.com/in/rubeena-vs) | [GitHub](https://github.com/rubeenavs)
+[LinkedIn](https://www.linkedin.com/in/rubeena-vs) | [GitHub](https://github.com/rubeenavs) | [Email](mailto:rubeenavs.it@gmail.com)
