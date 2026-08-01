@@ -139,6 +139,12 @@ The backend follows a layered structure with clear separation between data, busi
 
 ---
 
+## 🚀 Deployment
+
+Live deployment planned — currently optimized for local setup due to SQL Server hosting constraints on free platforms (Render/Railway free tiers only support Postgres/MySQL). See "How to Run Locally" above.
+
+---
+
 ## 👩‍💻 About
 
 Built by **Rubeena** — BTech Computer Science graduate, .NET Full Stack Developer.  
